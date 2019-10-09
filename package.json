@@ -1,6 +1,6 @@
 {
-  "name": "@openmrs/esm-dashboard",
-  "version": "1.0.0",
+  "name": "@openmrs/esm-user-dashboard",
+  "version": "0.0.1",
   "description": "A repo for creating openmrs microfrontend dashboard",
   "scripts": {
     "start": "webpack-dev-server",
