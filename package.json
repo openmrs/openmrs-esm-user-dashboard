@@ -1,7 +1,8 @@
 {
   "name": "@openmrs/esm-user-dashboard",
   "version": "0.0.1",
-  "description": "A repo for creating openmrs microfrontend dashboard",
+  "description": "A repo for creating openmrs microfrontend user dashboard",
+  "main": "dist/openmrs-esm-dashboard.js",
   "scripts": {
     "start": "webpack-dev-server",
     "lint": "eslint src --ext tsx",
@@ -14,16 +15,23 @@
       "pre-commit": "pretty-quick --staged && npm run lint && npm test && npm run typescript"
     }
   },
+  "directories": {
+    "lib": "dist"
+  },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/openmrs/openmrs-esm-user-dashboard"
   },
+  "keywords": [
+    "openmrs",
+    "dashboard"
+  ],
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": ""
   },
-  "homepage": "",
+  "homepage": "https://github.com/openmrs/openmrs-esm-user-dashboard#readme",
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
