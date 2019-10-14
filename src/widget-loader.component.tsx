@@ -7,7 +7,9 @@ export default function WidgetLoader(props: WidgetLoaderProps) {
   const [componentModule, setComponentModule] = useState(undefined);
   const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.Loading);
   const { module, name = "default" } = props.config.library;
-  const { title = "Control", size } = props.config;
+  const { size } = props.config;
+  const { properties: widgetProps } = props.config;
+  const { title = "Control" } = widgetProps;
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 600px)" });
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function WidgetLoader(props: WidgetLoaderProps) {
 
   function renderWidget() {
     const Component = componentModule[name];
-    return <Component language="en" />;
+    return <Component language="en" {...widgetProps} />;
   }
 
   function renderLoadingMessage() {
@@ -67,11 +69,11 @@ type WidgetLoaderProps = {
       rows?: number;
       columns?: number;
     };
-    title?: string;
     library: {
       module: string;
       name?: string;
     };
+    properties: any;
   };
 };
 

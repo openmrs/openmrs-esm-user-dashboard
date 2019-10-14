@@ -17,6 +17,9 @@ const mockDashboardConfig = {
       {
         library: {
           module: "mock-widget"
+        },
+        properties: {
+          title: "Test mock-widget"
         }
       }
     ]
