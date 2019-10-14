@@ -14,6 +14,10 @@ jest.mock("react-responsive", () => ({
 
 describe(`<WidgetLoader />`, () => {
   const originalError = console.error;
+  const testWidgetConfig = {
+    library: { module: "openmrs/test-widget" },
+    properties: { title: "Test Widget" }
+  };
   beforeAll(() => {
     setErrorFilter(originalError, /Warning.*not wrapped in act/);
 
@@ -33,17 +37,13 @@ describe(`<WidgetLoader />`, () => {
   });
 
   it(`should render Loading message when widget is loading`, () => {
-    const { queryByText } = render(
-      <WidgetLoader config={{ library: { module: "openmrs/test-widget" } }} />
-    );
+    const { queryByText } = render(<WidgetLoader config={testWidgetConfig} />);
 
     expect(queryByText("Loading...")).not.toBeNull();
   });
 
   it(`should render widget dynamically using config`, done => {
-    const { queryByText } = render(
-      <WidgetLoader config={{ library: { module: "openmrs/test-widget" } }} />
-    );
+    const { queryByText } = render(<WidgetLoader config={testWidgetConfig} />);
 
     waitForElement(() => queryByText("Test Widget")).then(() => {
       expect(queryByText("Test Widget")).not.toBeNull();
@@ -54,20 +54,23 @@ describe(`<WidgetLoader />`, () => {
   it(`should show error message when widget is not available`, done => {
     const { queryByText } = render(
       <WidgetLoader
-        config={{ library: { module: "openmrs/unavailable-widget" } }}
+        config={{
+          library: { module: "openmrs/unavailable-widget" },
+          properties: { title: "unavailable widget" }
+        }}
       />
     );
 
-    waitForElement(() => queryByText("Unable to load Control")).then(() => {
-      expect(queryByText("Unable to load Control")).not.toBeNull();
-      done();
-    });
+    waitForElement(() => queryByText("Unable to load unavailable widget")).then(
+      () => {
+        expect(queryByText("Unable to load unavailable widget")).not.toBeNull();
+        done();
+      }
+    );
   });
 
   it(`should render default size when not specified not specified`, () => {
-    const { container } = render(
-      <WidgetLoader config={{ library: { module: "openmrs/test-widget" } }} />
-    );
+    const { container } = render(<WidgetLoader config={testWidgetConfig} />);
 
     expect(container.firstChild).toHaveStyle(`grid-row:span 1;`);
     expect(container.firstChild).toHaveStyle(`grid-column:span 1;`);
@@ -76,10 +79,7 @@ describe(`<WidgetLoader />`, () => {
   it(`should render custom size when specified in config`, () => {
     const { container } = render(
       <WidgetLoader
-        config={{
-          size: { rows: 2, columns: 2 },
-          library: { module: "openmrs/test-widget" }
-        }}
+        config={{ ...testWidgetConfig, ...{ size: { rows: 2, columns: 2 } } }}
       />
     );
 
@@ -91,10 +91,7 @@ describe(`<WidgetLoader />`, () => {
     mockUseMediaQuery.mockReturnValue(true);
     const { container } = render(
       <WidgetLoader
-        config={{
-          size: { rows: 2, columns: 2 },
-          library: { module: "openmrs/test-widget" }
-        }}
+        config={{ ...testWidgetConfig, ...{ size: { rows: 2, columns: 2 } } }}
       />
     );
 
