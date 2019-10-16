@@ -76,8 +76,7 @@ export default function Root(props: RootProps) {
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="content">
       <div
         style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
         className="dashboard"
