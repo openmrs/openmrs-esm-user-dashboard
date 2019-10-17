@@ -2,6 +2,7 @@ import React from "react";
 import { render, waitForElement, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { useMediaQuery as mockUseMediaQuery } from "react-responsive";
+import { of } from "rxjs";
 
 import Root from "./root.component";
 import { setErrorFilter } from "./utils";
@@ -11,6 +12,17 @@ jest.mock("react-responsive", () => ({
   useMediaQuery: jest.fn().mockReturnValue(false)
 }));
 
+const mockUser = {
+  authenticated: true,
+  locale: "en_GB",
+  user: {
+    uuid: "uuid",
+    display: "admin",
+    person: { uuid: "uuid", display: "Test User" },
+    privileges: [],
+    roles: [{ uuid: "uuid", display: "System Developer" }]
+  }
+};
 const mockDashboardConfig = {
   data: {
     contents: [
@@ -27,7 +39,13 @@ const mockDashboardConfig = {
 };
 
 jest.mock("@openmrs/esm-api", () => ({
-  openmrsFetch: jest.fn().mockResolvedValueOnce(mockDashboardConfig)
+  openmrsFetch: jest.fn().mockResolvedValueOnce(mockDashboardConfig),
+  getCurrentUser: jest.fn().mockImplementation(() => ({
+    subscribe: () => {
+      return { unsubscribe: () => {} };
+    },
+    unsubscribe: () => {}
+  }))
 }));
 
 declare var System;
@@ -37,7 +55,7 @@ describe(`<Root />`, () => {
 
   beforeAll(() => {
     setErrorFilter(originalError, /Warning.*not wrapped in act/);
-
+    mockEsmAPI.getCurrentUser.mockImplementation(() => of(mockUser));
     System.import = jest
       .fn()
       .mockImplementation(moduleName =>
