@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { useMediaQuery as mockUseMediaQuery } from "react-responsive";
 
 import WidgetLoader from "./widget-loader.component";
-import { setErrorFilter } from "./utils";
+import { setErrorFilter } from "../utils";
 
 declare var System;
 
@@ -18,6 +18,11 @@ describe(`<WidgetLoader />`, () => {
     library: { module: "openmrs/test-widget" },
     properties: { title: "Test Widget" }
   };
+  const commonUserProps = {
+    id: "user-uuid",
+    locale: "en_GB"
+  };
+
   beforeAll(() => {
     setErrorFilter(originalError, /Warning.*not wrapped in act/);
 
@@ -37,13 +42,17 @@ describe(`<WidgetLoader />`, () => {
   });
 
   it(`should render Loading message when widget is loading`, () => {
-    const { queryByText } = render(<WidgetLoader config={testWidgetConfig} />);
+    const { queryByText } = render(
+      <WidgetLoader userProps={commonUserProps} config={testWidgetConfig} />
+    );
 
     expect(queryByText("Loading...")).not.toBeNull();
   });
 
   it(`should render widget dynamically using config`, done => {
-    const { queryByText } = render(<WidgetLoader config={testWidgetConfig} />);
+    const { queryByText } = render(
+      <WidgetLoader userProps={commonUserProps} config={testWidgetConfig} />
+    );
 
     waitForElement(() => queryByText("Test Widget")).then(() => {
       expect(queryByText("Test Widget")).not.toBeNull();
@@ -54,6 +63,7 @@ describe(`<WidgetLoader />`, () => {
   it(`should show error message when widget is not available`, done => {
     const { queryByText } = render(
       <WidgetLoader
+        userProps={commonUserProps}
         config={{
           library: { module: "openmrs/unavailable-widget" },
           properties: { title: "unavailable widget" }
@@ -70,7 +80,9 @@ describe(`<WidgetLoader />`, () => {
   });
 
   it(`should render default size when not specified not specified`, () => {
-    const { container } = render(<WidgetLoader config={testWidgetConfig} />);
+    const { container } = render(
+      <WidgetLoader userProps={commonUserProps} config={testWidgetConfig} />
+    );
 
     expect(container.firstChild).toHaveStyle(`grid-row:span 1;`);
     expect(container.firstChild).toHaveStyle(`grid-column:span 1;`);
@@ -79,6 +91,7 @@ describe(`<WidgetLoader />`, () => {
   it(`should render custom size when specified in config`, () => {
     const { container } = render(
       <WidgetLoader
+        userProps={commonUserProps}
         config={{ ...testWidgetConfig, ...{ size: { rows: 2, columns: 2 } } }}
       />
     );
@@ -91,6 +104,7 @@ describe(`<WidgetLoader />`, () => {
     mockUseMediaQuery.mockReturnValue(true);
     const { container } = render(
       <WidgetLoader
+        userProps={commonUserProps}
         config={{ ...testWidgetConfig, ...{ size: { rows: 2, columns: 2 } } }}
       />
     );

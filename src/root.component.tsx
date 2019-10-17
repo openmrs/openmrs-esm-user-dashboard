@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { openmrsFetch, getCurrentUser } from "@openmrs/esm-api";
 import { useMediaQuery } from "react-responsive";
 
-import WidgetLoader from "./widget-loader.component";
+import WidgetLoader from "./components/widget-loader.component";
 import LoadingStatus from "./model/loading-status";
+import Breadcrumb, { BreadcrumbPath } from "./components/breadcrumb.component";
 
 export default function Root(props: RootProps) {
   const rootConfigPath = "/frontend/dashboard-configs";
@@ -94,8 +95,18 @@ export default function Root(props: RootProps) {
       .trimRight();
   }
 
+  const getDashboardTitle = () =>
+    configLoadingStatus == LoadingStatus.Loaded
+      ? dashboardConfig.title
+      : "My Dashboard";
+
+  const breacrumbPath: BreadcrumbPath = {
+    name: getDashboardTitle()
+  };
+
   return (
     <div className="content">
+      <Breadcrumb paths={[breacrumbPath]}></Breadcrumb>
       <div
         style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
         className="dashboard"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import LoadingStatus from "./model/loading-status";
+import LoadingStatus from "../model/loading-status";
 
 export default function WidgetLoader(props: WidgetLoaderProps) {
   const [componentModule, setComponentModule] = useState(undefined);

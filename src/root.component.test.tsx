@@ -25,6 +25,7 @@ const mockUser = {
 };
 const mockDashboardConfig = {
   data: {
+    title: "test-dashboard",
     contents: [
       {
         library: {
@@ -75,8 +76,7 @@ describe(`<Root />`, () => {
   it(`renders Root without dying`, () => {
     mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
 
-    const { queryByText } = render(<Root />);
-
+    const { container, queryByText } = render(<Root />);
     expect(queryByText("Loading...")).not.toBeNull();
   });
 
