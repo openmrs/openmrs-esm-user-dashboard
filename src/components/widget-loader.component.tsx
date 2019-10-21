@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import LoadingStatus from "./model/loading-status";
+import LoadingStatus from "../model/loading-status";
 
 export default function WidgetLoader(props: WidgetLoaderProps) {
   const [componentModule, setComponentModule] = useState(undefined);
   const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.Loading);
+
   const { module, name = "default" } = props.config.library;
   const { size } = props.config;
   const { properties: widgetProps } = props.config;
@@ -19,14 +20,13 @@ export default function WidgetLoader(props: WidgetLoaderProps) {
         setLoadingStatus(LoadingStatus.Loaded);
       })
       .catch(error => {
-        console.error(error);
         setLoadingStatus(LoadingStatus.Failed);
       });
   }, []);
 
   function renderWidget() {
     const Component = componentModule[name];
-    return <Component language="en" {...widgetProps} />;
+    return <Component {...props.userProps} {...widgetProps} />;
   }
 
   function renderLoadingMessage() {
@@ -75,6 +75,7 @@ type WidgetLoaderProps = {
     };
     properties: any;
   };
+  userProps: any;
 };
 
 type GridSize = {

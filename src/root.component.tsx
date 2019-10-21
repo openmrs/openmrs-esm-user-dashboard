@@ -1,21 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { openmrsFetch } from "@openmrs/esm-api";
+import { openmrsFetch, getCurrentUser } from "@openmrs/esm-api";
 import { useMediaQuery } from "react-responsive";
 
-import WidgetLoader from "./widget-loader.component";
+import WidgetLoader from "./components/widget-loader.component";
 import LoadingStatus from "./model/loading-status";
+import Breadcrumb, { BreadcrumbPath } from "./components/breadcrumb.component";
 
 export default function Root(props: RootProps) {
+  const rootConfigPath = "/frontend/dashboard-configs";
   const [dashboardConfig, setDashboardConfig] = useState(undefined);
   const [configLoadingStatus, setConfigLoadingStatus] = useState(
     LoadingStatus.Loading
   );
+  const [loggedInUser, setLoggedInUser] = React.useState(null);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 600px)" });
 
+  const isLoggedIn = user => user && user.authenticated;
+  const getUserProps = user => ({
+    id: user.user.uuid,
+    locale: user.locale
+  });
   useEffect(() => {
-    let dashboardType = window.location.pathname.split("/").pop();
+    const sub = getCurrentUser({ includeAuthStatus: true }).subscribe(user =>
+      setLoggedInUser(user)
+    );
 
-    openmrsFetch(`/frontend/dashboard-configs/${dashboardType}.json`)
+    return () => sub.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn(loggedInUser)) {
+      return;
+    }
+
+    let dashboardType = window.location.pathname.split("/").pop();
+    openmrsFetch(`${rootConfigPath}/${dashboardType}.json`)
       .then(response => {
         setDashboardConfig(response.data);
         setConfigLoadingStatus(LoadingStatus.Loaded);
@@ -23,7 +42,7 @@ export default function Root(props: RootProps) {
       .catch(error => {
         setConfigLoadingStatus(LoadingStatus.Failed);
       });
-  }, []);
+  }, [loggedInUser]);
 
   function renderDashboard() {
     return (
@@ -33,6 +52,7 @@ export default function Root(props: RootProps) {
             <WidgetLoader
               key={widget.library.module}
               config={widget}
+              userProps={getUserProps(loggedInUser)}
             ></WidgetLoader>
           );
         })}
@@ -75,15 +95,27 @@ export default function Root(props: RootProps) {
       .trimRight();
   }
 
+  const getDashboardTitle = () =>
+    configLoadingStatus == LoadingStatus.Loaded
+      ? dashboardConfig.title
+      : "My Dashboard";
+
+  const breacrumbPath: BreadcrumbPath = {
+    name: getDashboardTitle()
+  };
+
   return (
-    <div className="content">
-      <div
-        style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
-        className="dashboard"
-      >
-        {displayDashboard()}
+    isLoggedIn(loggedInUser) && (
+      <div className="content">
+        <Breadcrumb paths={[breacrumbPath]}></Breadcrumb>
+        <div
+          style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
+          className="dashboard"
+        >
+          {displayDashboard()}
+        </div>
       </div>
-    </div>
+    )
   );
 }
 
