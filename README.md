@@ -20,3 +20,66 @@ Refer [Architecture Decision Record](docs/adr-03-dashboard-configuration.md) for
 ## Architecture Decision Records
 
 Architecture decision records are available under `docs` folder.
+
+## Features
+
+- Responsive Layout
+- User Context
+- Breadcrumb
+
+## Responsive Layout
+
+Dashboard allows the developers/implementers to configure the layout of dashboard & widgets. They can control the layout at 2 levels.
+
+1. Dashbaord Level
+
+In configuration, you can configure howmany columns you want to have for the dashboard.
+By default, dashbaord will contain 2 columns.
+
+### Example
+
+```
+{
+  ...
+
+  "layout": {
+    "columns": 10 //No of columns the dashboard should have. default: 2
+  },
+
+  ...
+}
+```
+
+2. Widget Level
+
+In configuration, you can configure howmany columns & rows a widget can take. By default it will be 1.
+
+```
+{
+  ...
+  "contents": [
+    ...
+    {
+      size: {
+        rows:2, // No of rows occupied by widget
+        columns:1 // No of columns occupied by widget
+      },
+    }
+    ...
+  ]
+  ...
+}
+```
+
+## User Context
+
+Dashboard will set the user related properties as context for the widgets. User context information will be passed as properties for the widgets.
+
+Below user information are avaialble as properties for widgets.
+
+1. uuid
+2. locale
+
+## Breadcrumb
+
+Dashboard will show the breadcrumb based on the title of the dashboard.
