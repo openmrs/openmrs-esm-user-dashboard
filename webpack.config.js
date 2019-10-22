@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin;
 module.exports = {
   entry: path.resolve(__dirname, "src/dashboard.tsx"),
   output: {
-    filename: "openmrs-esm-dashboard.js",
+    filename: "openmrs-esm-user-dashboard.js",
     libraryTarget: "system",
     path: path.resolve(__dirname, "dist")
   },

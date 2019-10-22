@@ -2,7 +2,7 @@
   "name": "@openmrs/esm-user-dashboard",
   "version": "0.0.5",
   "description": "A repo for creating openmrs microfrontend user dashboard",
-  "main": "dist/openmrs-esm-dashboard.js",
+  "main": "dist/openmrs-esm-user-dashboard.js",
   "scripts": {
     "start": "webpack-dev-server",
     "lint": "eslint src --ext tsx",
