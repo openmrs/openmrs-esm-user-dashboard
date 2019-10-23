@@ -5,6 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import WidgetLoader from "./components/widget-loader.component";
 import LoadingStatus from "./model/loading-status";
 import Breadcrumb, { BreadcrumbPath } from "./components/breadcrumb.component";
+import ToastMessages from "./components/toast-messages/index.component";
 
 export default function Root(props: RootProps) {
   const rootConfigPath = "/frontend/dashboard-configs";
@@ -14,6 +15,15 @@ export default function Root(props: RootProps) {
   );
   const [loggedInUser, setLoggedInUser] = React.useState(null);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 600px)" });
+  const toastMessageRef = React.createRef();
+
+  const widgetHandles = {
+    showMessage(message) {
+      if (toastMessageRef.current["add"]) {
+        toastMessageRef.current["add"](message);
+      }
+    }
+  };
 
   const isLoggedIn = user => user && user.authenticated;
   const getUserProps = user => ({
@@ -53,6 +63,7 @@ export default function Root(props: RootProps) {
               key={widget.library.module}
               config={widget}
               userProps={getUserProps(loggedInUser)}
+              handles={widgetHandles}
             ></WidgetLoader>
           );
         })}
@@ -114,6 +125,7 @@ export default function Root(props: RootProps) {
         >
           {displayDashboard()}
         </div>
+        <ToastMessages ref={toastMessageRef}></ToastMessages>
       </div>
     )
   );

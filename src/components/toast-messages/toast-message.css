@@ -1,0 +1,9 @@
+.top-right {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.note-container .close-icon {
+  font-size: 1em !important;
+}

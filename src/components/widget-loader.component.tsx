@@ -7,6 +7,7 @@ export default function WidgetLoader(props: WidgetLoaderProps) {
   const [componentModule, setComponentModule] = useState(undefined);
   const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.Loading);
 
+  const { handles = {} } = props;
   const { module, name = "default" } = props.config.library;
   const { size } = props.config;
   const { properties: widgetProps } = props.config;
@@ -26,7 +27,7 @@ export default function WidgetLoader(props: WidgetLoaderProps) {
 
   function renderWidget() {
     const Component = componentModule[name];
-    return <Component {...props.userProps} {...widgetProps} />;
+    return <Component {...props.userProps} {...widgetProps} {...handles} />;
   }
 
   function renderLoadingMessage() {
@@ -76,6 +77,7 @@ type WidgetLoaderProps = {
     properties: any;
   };
   userProps: any;
+  handles?: any;
 };
 
 type GridSize = {
