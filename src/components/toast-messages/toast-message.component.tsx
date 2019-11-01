@@ -10,7 +10,7 @@ export default function ToastMessage(props: ToastMessageProperties) {
     warning: "warning-sign"
   };
   return (
-    <div className="note-container top-right">
+    <div className="note-container">
       <div className={`note ${type}`}>
         <div className="text">
           <i className={`icon-${icons[type]} medium`}></i>

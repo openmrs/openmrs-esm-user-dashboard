@@ -18,9 +18,9 @@ export default function Root(props: RootProps) {
   const toastMessageRef = React.createRef();
 
   const widgetHandles = {
-    showMessage(message) {
+    showMessage(messageDetails) {
       if (toastMessageRef.current["add"]) {
-        toastMessageRef.current["add"](message);
+        toastMessageRef.current["add"](messageDetails);
       }
     }
   };
