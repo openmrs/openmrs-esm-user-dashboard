@@ -1,3 +1,8 @@
+.toast-messages {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .top-right {
   position: absolute;
   top: 0px;
@@ -6,4 +11,8 @@
 
 .note-container .close-icon {
   font-size: 1em !important;
+}
+
+.note-container .note {
+  margin: 0px !important;
 }

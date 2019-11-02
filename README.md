@@ -26,6 +26,7 @@ Architecture decision records are available under `docs` folder.
 - Responsive Layout
 - User Context
 - Breadcrumb
+- Toast Messages
 
 ## Responsive Layout
 
@@ -83,3 +84,28 @@ Below user information are avaialble as properties for widgets.
 ## Breadcrumb
 
 Dashboard will show the breadcrumb based on the title of the dashboard.
+
+## Toast Messages
+
+Dashboard allows the widgets to show toast messages when they want to some information to the user. All the widgets will a reference property called `showMessage` which can be called with below signatature to a message to user.
+
+### Sample Usage
+
+```
+// sample-widget.tsx
+
+function SampleWidget(props) {
+  const showSampleMessage = () =>{
+    props.showMessage({type: "success", message: "You clicked the button"});
+  };
+
+  return <button onClick={showSampleMessage}>Show Message<button>
+}
+
+```
+
+### Supported Message Types
+
+- `success`
+- `error`
+- `warning`

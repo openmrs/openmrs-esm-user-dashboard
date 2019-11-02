@@ -1,6 +1,8 @@
 import React, { useState, useImperativeHandle } from "react";
 import ToastMessage from "./toast-message.component";
 
+import "./toast-message.css";
+
 export default React.forwardRef(function ToastMessages(
   props: ToastMessagesProperties,
   ref
@@ -12,13 +14,13 @@ export default React.forwardRef(function ToastMessages(
   useImperativeHandle(ref, () => {
     return {
       add(newToast) {
-        setToasts([...toasts, newToast]);
+        setToasts(existingToasts => [...existingToasts, newToast]);
       }
     };
   });
 
   return (
-    <>
+    <div className="top-right toast-messages">
       {toasts.map(toast => {
         return (
           <ToastMessage
@@ -28,7 +30,7 @@ export default React.forwardRef(function ToastMessages(
           ></ToastMessage>
         );
       })}
-    </>
+    </div>
   );
 });
 

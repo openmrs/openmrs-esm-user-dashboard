@@ -16,9 +16,14 @@ describe("ToastMessage", () => {
         type: "success",
         message: "first message"
       });
+      addMessage({
+        type: "success",
+        message: "second message"
+      });
     });
 
     expect(getByText("first message")).toBeTruthy();
+    expect(getByText("second message")).toBeTruthy();
   });
 
   it("should hide the message when close button clicked", () => {
