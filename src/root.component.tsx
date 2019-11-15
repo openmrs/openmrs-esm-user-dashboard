@@ -117,7 +117,7 @@ export default function Root(props: RootProps) {
 
   return (
     isLoggedIn(loggedInUser) && (
-      <div className="content">
+      <div className="content dashboard-container">
         <Breadcrumb paths={[breacrumbPath]}></Breadcrumb>
         <div
           style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
