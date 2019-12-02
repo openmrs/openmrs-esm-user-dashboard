@@ -9,11 +9,13 @@ import ToastMessages from "./components/toast-messages/index.component";
 
 export default function Root(props: RootProps) {
   const rootConfigPath = "/frontend/dashboard-configs";
+  const getProviderByUserUrl = "/ws/rest/v1/provider?user=";
   const [dashboardConfig, setDashboardConfig] = useState(undefined);
   const [configLoadingStatus, setConfigLoadingStatus] = useState(
     LoadingStatus.Loading
   );
   const [loggedInUser, setLoggedInUser] = React.useState(null);
+  const [loggedInProvider, setLoggedInProvider] = React.useState(null);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 600px)" });
   const toastMessageRef = React.createRef();
 
@@ -26,9 +28,10 @@ export default function Root(props: RootProps) {
   };
 
   const isLoggedIn = user => user && user.authenticated;
-  const getUserProps = user => ({
+  const getUserProps = (user, provider) => ({
     id: user.user.uuid,
-    locale: user.locale
+    locale: user.locale,
+    provider: provider.uuid
   });
   useEffect(() => {
     const sub = getCurrentUser({ includeAuthStatus: true }).subscribe(user =>
@@ -44,9 +47,17 @@ export default function Root(props: RootProps) {
     }
 
     let dashboardType = window.location.pathname.split("/").pop();
-    openmrsFetch(`${rootConfigPath}/${dashboardType}.json`)
-      .then(response => {
-        setDashboardConfig(response.data);
+    const configPromise = openmrsFetch(
+      `${rootConfigPath}/${dashboardType}.json`
+    );
+    const providerPromise = openmrsFetch(
+      `${getProviderByUserUrl}${loggedInUser.user.uuid}`
+    );
+
+    Promise.all([configPromise, providerPromise])
+      .then(([configResponse, providerResponse]) => {
+        setLoggedInProvider(providerResponse.data.results[0]);
+        setDashboardConfig(configResponse.data);
         setConfigLoadingStatus(LoadingStatus.Loaded);
       })
       .catch(error => {
@@ -62,7 +73,7 @@ export default function Root(props: RootProps) {
             <WidgetLoader
               key={widget.library.module}
               config={widget}
-              userProps={getUserProps(loggedInUser)}
+              userProps={getUserProps(loggedInUser, loggedInProvider)}
               handles={widgetHandles}
             ></WidgetLoader>
           );
