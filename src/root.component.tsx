@@ -9,7 +9,7 @@ import ToastMessages from "./components/toast-messages/index.component";
 
 export default function Root(props: RootProps) {
   const rootConfigPath = "/frontend/dashboard-configs";
-  const getProviderByUserUrl = "/ws/rest/v1/provider?user=";
+  const providerByUserUrl = "/ws/rest/v1/provider?user=";
   const [dashboardConfig, setDashboardConfig] = useState(undefined);
   const [configLoadingStatus, setConfigLoadingStatus] = useState(
     LoadingStatus.Loading
@@ -51,7 +51,7 @@ export default function Root(props: RootProps) {
       `${rootConfigPath}/${dashboardType}.json`
     );
     const providerPromise = openmrsFetch(
-      `${getProviderByUserUrl}${loggedInUser.user.uuid}`
+      `${providerByUserUrl}${loggedInUser.user.uuid}`
     );
 
     Promise.all([configPromise, providerPromise])
@@ -66,12 +66,17 @@ export default function Root(props: RootProps) {
   }, [loggedInUser]);
 
   function renderDashboard() {
+    const widgetKey = widgetConfig =>
+      `${widgetConfig.library.module}-${
+        widgetConfig.library.name ? widgetConfig.library.name : ""
+      }`;
+
     return (
       <>
         {dashboardConfig.contents.map(widget => {
           return (
             <WidgetLoader
-              key={widget.library.module}
+              key={widgetKey(widget)}
               config={widget}
               userProps={getUserProps(loggedInUser, loggedInProvider)}
               handles={widgetHandles}
