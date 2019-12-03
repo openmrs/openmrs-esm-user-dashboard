@@ -39,6 +39,16 @@ const mockDashboardConfig = {
   }
 };
 
+const mockProviderResponse = {
+  data: {
+    results: [
+      {
+        uuid: "test-provider-uuid"
+      }
+    ]
+  }
+};
+
 jest.mock("@openmrs/esm-api", () => ({
   openmrsFetch: jest.fn().mockResolvedValueOnce(mockDashboardConfig),
   getCurrentUser: jest.fn().mockImplementation(() => ({
@@ -82,6 +92,7 @@ describe(`<Root />`, () => {
 
   it(`should render widget from config`, done => {
     mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
+    mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockProviderResponse);
 
     const { queryByText } = render(<Root />);
 
@@ -104,9 +115,24 @@ describe(`<Root />`, () => {
     });
   });
 
+  it(`should show error message when unable to fetch provider information.`, done => {
+    mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
+    mockEsmAPI.openmrsFetch.mockReturnValue(
+      Promise.reject(new Error("Unexpected error"))
+    );
+
+    const { queryByText } = render(<Root />);
+
+    waitForElement(() => queryByText("Unable to load dashboard")).then(() => {
+      expect(queryByText("Unable to load dashboard")).not.toBeNull();
+      done();
+    });
+  });
+
   it(`should render grid template frame as 1fr when it is tablet or mobile`, done => {
     mockUseMediaQuery.mockReturnValue(true);
     mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
+    mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockProviderResponse);
 
     const { container, queryByText } = render(<Root />);
 
