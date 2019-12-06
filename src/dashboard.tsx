@@ -4,9 +4,9 @@ import singleSpaReact from "single-spa-react";
 import Root from "./root.component";
 import "./global.css";
 import "./set-public-path";
-import { fetchInterceptInitialiser } from "./utils";
+import { fetchInterceptInitializer } from "./utils";
 
-fetchInterceptInitialiser();
+fetchInterceptInitializer();
 
 const lifecycles = singleSpaReact({
   React,
