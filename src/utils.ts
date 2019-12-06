@@ -19,7 +19,7 @@ export const renderWithAct = component => {
   return wrapper;
 };
 
-export function fetchInterceptInitializer() {
+export function setFetchInterceptor() {
   let oldFetch = window.fetch;
 
   window.fetch = (function() {
