@@ -18,3 +18,24 @@ export const renderWithAct = component => {
   });
   return wrapper;
 };
+
+export function fetchInterceptInitialiser() {
+  let oldFetch = window.fetch;
+
+  window.fetch = (function() {
+    return function() {
+      let result = oldFetch.apply(this, arguments);
+      result
+        .then(res => {
+          if (res.status == 401 || res.status == 403) {
+            window.open(
+              "/openmrs/appui/header/logout.action?successUrl=openmrs",
+              "_self"
+            );
+          }
+        })
+        .catch(err => {});
+      return result;
+    };
+  })();
+}
