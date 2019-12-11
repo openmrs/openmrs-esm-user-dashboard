@@ -10,6 +10,7 @@ describe("ToastMessage", () => {
         type="success"
         message="test message"
         onClose={jest.fn()}
+        id={"123"}
       ></ToastMessage>
     );
 
@@ -23,6 +24,7 @@ describe("ToastMessage", () => {
         type="success"
         message="test message"
         onClose={mockOnClose}
+        id={"456"}
       ></ToastMessage>
     );
 

@@ -3,12 +3,21 @@ import React from "react";
 import "./toast-message.css";
 
 export default function ToastMessage(props: ToastMessageProperties) {
-  const { type, message, onClose } = props;
+  const { type, message, onClose, id } = props;
   const icons = {
     error: "remove",
     success: "ok",
     warning: "warning-sign"
   };
+
+  if (!sessionStorage.getItem(id)) {
+    sessionStorage.setItem(id, "1");
+    setTimeout(() => {
+      onClose();
+      sessionStorage.removeItem(id);
+    }, 5000);
+  }
+
   return (
     <div className="note-container">
       <div className={`note ${type}`}>
@@ -33,4 +42,5 @@ type ToastMessageProperties = {
   type: string;
   message: string;
   onClose: any;
+  id: string;
 };

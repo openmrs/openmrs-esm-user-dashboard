@@ -8,8 +8,11 @@ export default React.forwardRef(function ToastMessages(
   ref
 ) {
   const [toasts, setToasts] = useState([]);
-  const removeMessage = (removedToast: Toast) =>
-    setToasts(toasts.filter(toast => toast.message !== removedToast.message));
+  const removeMessage = (removedToast: Toast) => {
+    setToasts(existingToasts =>
+      existingToasts.filter(toast => toast.id !== removedToast.id)
+    );
+  };
 
   useImperativeHandle(ref, () => {
     return {
@@ -24,7 +27,7 @@ export default React.forwardRef(function ToastMessages(
       {toasts.map(toast => {
         return (
           <ToastMessage
-            key={toast.type + toast.message}
+            key={toast.id}
             {...toast}
             onClose={() => removeMessage(toast)}
           ></ToastMessage>
@@ -39,4 +42,5 @@ type ToastMessagesProperties = {};
 type Toast = {
   type: string;
   message: string;
+  id: string;
 };
