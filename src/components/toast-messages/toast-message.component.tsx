@@ -11,11 +11,13 @@ export default function ToastMessage(props: ToastMessageProperties) {
   };
 
   if (!sessionStorage.getItem(id)) {
-    sessionStorage.setItem(id, "1");
-    setTimeout(() => {
-      onClose();
-      sessionStorage.removeItem(id);
-    }, 5000);
+    sessionStorage.setItem(
+      id,
+      setTimeout(() => {
+        onClose();
+        sessionStorage.removeItem(id);
+      }, 5000).toString()
+    );
   }
 
   return (
