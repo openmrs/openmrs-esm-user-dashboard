@@ -22,7 +22,11 @@ export default function Root(props: RootProps) {
   const widgetHandles = {
     showMessage(messageDetails) {
       if (toastMessageRef.current["add"]) {
-        toastMessageRef.current["add"](messageDetails);
+        const toast = {
+          ...messageDetails,
+          id: Math.floor(1000 + Math.random() * 9000)
+        };
+        toastMessageRef.current["add"](toast);
       }
     }
   };
