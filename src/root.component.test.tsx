@@ -26,6 +26,15 @@ const mockUser = {
 const mockDashboardConfig = {
   data: {
     title: "test-dashboard",
+    breadcrumbs: [
+      {
+        name: "receptionist",
+        href: "openmrs/spa/dashboard/dashboard/receptionist"
+      },
+      {
+        name: "View All"
+      }
+    ],
     contents: [
       {
         library: {
@@ -86,8 +95,23 @@ describe(`<Root />`, () => {
   it(`renders Root without dying`, () => {
     mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
 
-    const { container, queryByText } = render(<Root />);
+    const { queryByText } = render(<Root />);
     expect(queryByText("Loading...")).not.toBeNull();
+  });
+
+  it(`should show breadcrumb from config`, done => {
+    mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockDashboardConfig);
+    mockEsmAPI.openmrsFetch.mockResolvedValueOnce(mockProviderResponse);
+
+    const { queryByText } = render(<Root />);
+
+    waitForElement(() => queryByText("receptionist")).then(() => {
+      expect(queryByText("receptionist")).toHaveAttribute(
+        "href",
+        "openmrs/spa/dashboard/dashboard/receptionist"
+      );
+      done();
+    });
   });
 
   it(`should render widget from config`, done => {

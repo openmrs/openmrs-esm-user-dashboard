@@ -131,14 +131,19 @@ export default function Root(props: RootProps) {
       ? dashboardConfig.title
       : "My Dashboard";
 
-  const breacrumbPath: BreadcrumbPath = {
+  const getDefaultBreadcrumb = (): BreadcrumbPath => ({
     name: getDashboardTitle()
-  };
+  });
+
+  const breadcrumbs = () =>
+    dashboardConfig && dashboardConfig.breadcrumbs
+      ? dashboardConfig.breadcrumbs
+      : [getDefaultBreadcrumb()];
 
   return (
     isLoggedIn(loggedInUser) && (
       <div className="content dashboard-container">
-        <Breadcrumb paths={[breacrumbPath]}></Breadcrumb>
+        <Breadcrumb paths={breadcrumbs()}></Breadcrumb>
         <div
           style={{ gridTemplateColumns: getColumnsLayoutStyle() }}
           className="dashboard"
