@@ -1,5 +1,3 @@
-// @ts-ignore
-import { getPublicPath } from "@openmrs/esm-root-config";
+import { setPublicPath } from "systemjs-webpack-interop";
 
-// @ts-ignore
-__webpack_public_path__ = getPublicPath("@openmrs/esm-user-dashboard");
+setPublicPath("@openmrs/esm-user-dashboard-app");
