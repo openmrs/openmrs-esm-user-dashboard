@@ -6,7 +6,8 @@ module.exports = {
   output: {
     filename: "openmrs-esm-user-dashboard.js",
     libraryTarget: "system",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    jsonpFunction: "webpackJsonp_openmrs_esm_user_dashboard"
   },
   module: {
     rules: [
