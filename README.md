@@ -2,6 +2,8 @@
 
 ESM Package serves as an engine for rendering dashboard widgets based on the configuration served.
 
+Note: This package was initially published as `@openmrs/esm-user-dashboard`. It was renamed to `@openmrs/esm-user-dashboard-app` for it to be compatible with [Latest SPA](https://github.com/openmrs/openmrs-rfc-frontend/blob/master/text/0026-activation-distribution.md)
+
 ## Pre-Requesties
 
 NodeJS

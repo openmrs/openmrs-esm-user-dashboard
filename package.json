@@ -1,6 +1,6 @@
 {
-  "name": "@openmrs/esm-user-dashboard",
-  "version": "1.0.0",
+  "name": "@openmrs/esm-user-dashboard-app",
+  "version": "1.0.1-beta",
   "description": "A repo for creating openmrs microfrontend user dashboard",
   "main": "dist/openmrs-esm-user-dashboard.js",
   "scripts": {
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/openmrs/openmrs-esm-user-dashboard#readme",
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
@@ -52,6 +52,7 @@
     "css-loader": "^3.0.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^5.16.0",
+    "systemjs-webpack-interop": "^1.1.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-config-react-important-stuff": "^1.1.0",
     "eslint-plugin-prettier": "^3.1.0",

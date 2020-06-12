@@ -2,11 +2,12 @@ const path = require("path");
 const CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin;
 
 module.exports = {
-  entry: path.resolve(__dirname, "src/dashboard.tsx"),
+  entry: path.resolve(__dirname, "src/index.ts"),
   output: {
     filename: "openmrs-esm-user-dashboard.js",
     libraryTarget: "system",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    jsonpFunction: "webpackJsonp_openmrs_esm_user_dashboard"
   },
   module: {
     rules: [
